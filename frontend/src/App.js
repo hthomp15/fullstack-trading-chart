@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Header from './components/Header/index.tsx'
 import PageBody from './components/PageBody/index.tsx';
