@@ -37,7 +37,7 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({ marketData, market, setMarket
     ];
 
     return (
-        <ul className="border-solid border-[#1A1A1A] border-b-2 p-2 mr-20 mt-6 flex items-center justify-between text-[#ADADAD] text-sm">
+        <ul className="border-solid border-[#1A1A1A] border-b-2 p-2 pr-20 mt-6 flex items-center justify-between text-[#ADADAD] text-sm">
             {/* Market Dropdown */}
             <li className="flex items-center space-x-2">
                 <select
