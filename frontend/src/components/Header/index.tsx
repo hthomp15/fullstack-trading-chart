@@ -2,6 +2,7 @@
 import React from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { BellIcon } from '@heroicons/react/24/outline'
+import arrow from '../../arrow.svg'
 
 const Header: React.FC = () => {
     return (
@@ -30,9 +31,9 @@ const Header: React.FC = () => {
                 <button className="text-[#ADADAD] text-sm flex items-center">
                     0xfC...E63d1
                     <img
-                        src="./chevron-down.svg"
+                        src={arrow}
                         alt="Chevron down"
-                        className="ml-1 h-4 w-4"
+                        className="ml-1 h-5 w-5"
                     />
                 </button>
             </div>

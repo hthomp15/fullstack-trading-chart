@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App mx-20 mt-4">
       <Header />
-      {/* <PageBody /> */}
+      <PageBody />
     </div>
   );
 }
