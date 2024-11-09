@@ -27,11 +27,7 @@ const PageBody: React.FC = () => {
     return (
         <div className="main-chart w-full mt-4">
             <ChartHeader marketData={data} market={market} updateMarket={handleUpdateMarket}/>
-            <div className="tabs">
-                <button onClick={() => setChartType("price")}>Price</button>
-                <button onClick={() => setChartType("funding")}>Funding</button>
-            </div>
-            <div className="flex">
+            <div className="flex mt-4">
                 <ChartComponent market={market}/>
                 <OrderForm />
             </div>

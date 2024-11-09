@@ -150,7 +150,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ market }) => {
     };
 
     return (
-        <div className="w-9/12">
+        <div className="w-9/12 mr-4">
             <div ref={chartContainerRef} />
             <div style={{ marginTop: '10px' }}>
                 <select
