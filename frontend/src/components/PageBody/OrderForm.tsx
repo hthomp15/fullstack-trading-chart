@@ -5,11 +5,16 @@ const OrderForm: React.FC = () => {
     const [orderType, setOrderType] = useState<"long" | "short">("long");
     const [size, setSize] = useState<number | "">("");
 
+    const handleOrderSelection = () => {
+        if(orderType === "long") setOrderType("short")
+        else setOrderType("long")
+    }
+
     return (
-        <div className="order-form">
-            <div className="tabs">
-                <button onClick={() => setOrderType("long")} style={{ color: orderType === "long" ? "green" : "black" }}>Long</button>
-                <button onClick={() => setOrderType("short")} style={{ color: orderType === "short" ? "red" : "black" }}>Short</button>
+        <div className="order-form flex flex-col px-4 mx-4 bg-[#171513] w-3/12">
+            <div className="tabs flex flex-row">
+                <button onClick={handleOrderSelection} className={`text-2xl  w-full p-3 bg-[#171513] mx-2 ${orderType === "long" ? "text-[#c94b38] border-b-2 border-[#703026]" : "text-[#9d9a9b]"}`}>Long</button>
+                <button onClick={handleOrderSelection} className={`text-2xl  w-full p-3 bg-[#171513] mx-2 ${orderType === "long" ? "text-[#c94b38] border-b-2 border-[#703026]" : "text-[#9d9a9b]"}`}>Short</button>
             </div>
             <form>
                 <label>Order Type</label>
