@@ -67,7 +67,26 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ market }) => {
                 newCandlestickSeries.setData(historicalData);
             });
 
-            return () => chart.remove();
+            let resizeTimeout: NodeJS.Timeout;
+
+            const resizeObserver = new ResizeObserver((entries) => {
+                if (resizeTimeout) clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    for (let entry of entries) {
+                        if (entry.target === chartContainerRef.current && chart) {
+                            chart.applyOptions({ width: entry.contentRect.width });
+                        }
+                    }
+                }, 100); 
+            });
+
+            resizeObserver.observe(chartContainerRef.current);
+
+            return () => {
+                chart.remove();
+                resizeObserver.disconnect();
+                if (resizeTimeout) clearTimeout(resizeTimeout);
+            };
         }
     }, [market, selectedInterval]);
 
@@ -131,7 +150,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ market }) => {
     };
 
     return (
-        <div className="w-full">
+        <div className="w-9/12">
             <div ref={chartContainerRef} />
             <div style={{ marginTop: '10px' }}>
                 <select
