@@ -1,17 +1,12 @@
-// MainChart.tsx
 import React, { useState, useEffect } from 'react';
 import ChartHeader from './ChartHeader.tsx';
 import ChartComponent from './Chart.tsx';
 import OrderForm from './OrderForm.tsx';
 import { MarketData } from '../../types/market'
-// import { fetchMarketData } from './api';
-
-
-
 
 
 const PageBody: React.FC = () => {
-    const [market, setMarket] = useState<string>("ETH/USDT");
+    const [market, setMarket] = useState<string>("BTC-PERP");
     const [chartType, setChartType] = useState<"price" | "funding">("price");
     const [data, setData] = useState<MarketData>({
         market: "BTC/USDT",
@@ -24,16 +19,22 @@ const PageBody: React.FC = () => {
         chartType: "price"
     });
 
+    const handleUpdateMarket = (market: string) => {
+        setMarket(market)
+    }
+
 
     return (
         <div className="main-chart w-full mt-4">
-            <ChartHeader marketData={data} market={market} setMarket={setMarket} />
+            <ChartHeader marketData={data} market={market} updateMarket={handleUpdateMarket}/>
             <div className="tabs">
                 <button onClick={() => setChartType("price")}>Price</button>
                 <button onClick={() => setChartType("funding")}>Funding</button>
             </div>
-            {/* <ChartComponent type={chartType} data={data[chartType]} /> */}
-            <OrderForm />
+            <div className="flex">
+                <ChartComponent market={market}/>
+                <OrderForm />
+            </div>
         </div>
     );
 };
