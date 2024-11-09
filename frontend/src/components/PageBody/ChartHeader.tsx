@@ -4,10 +4,10 @@ import { MarketData } from '../../types/market';
 interface ChartHeaderProps {
     marketData: MarketData;
     market: string;
-    setMarket: (market: string) => void;
+    updateMarket: (market: string) => void;
 }
 
-const ChartHeader: React.FC<ChartHeaderProps> = ({ marketData, market, setMarket }) => {
+const ChartHeader: React.FC<ChartHeaderProps> = ({ marketData, market, updateMarket }) => {
     const dataItems = [
         {
             label: 'Price',
@@ -36,13 +36,19 @@ const ChartHeader: React.FC<ChartHeaderProps> = ({ marketData, market, setMarket
         },
     ];
 
+    const handleSelectMarket = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedMarket = e.target.value;
+        console.log("selected amrket", e)
+        updateMarket(selectedMarket);
+    };
+
     return (
         <ul className="border-solid border-[#1A1A1A] border-b-2 p-2 pr-20 mt-6 flex items-center justify-between text-[#ADADAD] text-sm">
             {/* Market Dropdown */}
             <li className="flex items-center space-x-2">
                 <select
                     value={market}
-                    onChange={(e) => setMarket(e.target.value)}
+                    onChange={handleSelectMarket}
                     className="bg-[#100E0D] focus:outline-none text-white font-bold p-2 rounded-md"
                 >
                     <option value="BTC-PERP">BTC / BTC-PERP</option>
