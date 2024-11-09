@@ -104,7 +104,7 @@ const OrderForm: React.FC = () => {
                 </select>
                 <button 
                     type="submit"
-                    className="p-3 text-center w-full text-2xl text-[#1a1a1a] rounded"
+                    className="p-3 text-center w-full text-2xl bg-[#4bc2a2] text-[#1a1a1a] rounded"
                 >
                      Buy / {orderType.charAt(0).toUpperCase() + orderType.slice(1)}
                 </button>
