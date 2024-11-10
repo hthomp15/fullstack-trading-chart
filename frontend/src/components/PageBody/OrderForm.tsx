@@ -37,8 +37,8 @@ const OrderForm: React.FC = () => {
         if (buttonRef.current) {
             const rect = buttonRef.current.getBoundingClientRect();
             setButtonPosition({
-                x: rect.left + window.pageXOffset,  // Adjusting for page scroll offset
-                y: rect.top + window.pageYOffset,   // Adjusting for page scroll offset
+                x: rect.left, 
+                y: rect.top,  
                 w: rect.width,
                 h: rect.height
             });
@@ -88,7 +88,7 @@ const OrderForm: React.FC = () => {
                     </div>
                     <span className="">Up to 1,458.173</span>
                 </div>
-                <div className="w-full max-w-md mx-auto mb-4">
+                <div className="w-full max-w-md mx-auto mb-3">
                     <div className="flex justify-between text-gray-400 mb-2">
                         <label className="text-lg">Leverage</label>
                         <span className="text-lg font-semibold text-white">{formatLeverage(leverage)}</span>
@@ -116,7 +116,7 @@ const OrderForm: React.FC = () => {
                         ))}
                     </div>
                 </div>
-                <div className="mb-4">
+                <div className="mb-3">
                     <div className="flex my-1">
                         <span className="w-7/12">Liquidation Price</span>
                         <span className="w-5/12 text-[#f3f0ef] text-right">300,212 USDC</span>
@@ -130,18 +130,20 @@ const OrderForm: React.FC = () => {
                         <span className="w-7/12 text-[#f3f0ef] text-right">2.00 USDC (0.05%)</span>
                     </div>
                 </div>
-                <select id="" className="w-full bg-[#171513] focus:outline-none mb-4">
-                    <option value="Advanced">Advanced</option>
-                    <option value="Light">Light</option>
-                </select>
-                <button
-                    type="submit"
-                    ref={buttonRef}
-                    onClick={handleSubmit}
-                    className="p-3 text-center w-full text-2xl bg-[#4bc2a2] text-[#1a1a1a] rounded"
-                >
-                    Buy / {orderType.charAt(0).toUpperCase() + orderType.slice(1)}
-                </button>
+                <div className="">
+                    <select id="" className="w-full bg-[#171513] focus:outline-none mb-4">
+                        <option value="Advanced">Advanced</option>
+                        <option value="Light">Light</option>
+                    </select>
+                    <button
+                        type="submit"
+                        ref={buttonRef}
+                        onClick={handleSubmit}
+                        className="p-3 text-center w-full text-2xl bg-[#4bc2a2] text-[#1a1a1a] rounded"
+                    >
+                        Buy / {orderType.charAt(0).toUpperCase() + orderType.slice(1)}
+                    </button>
+                </div>
             </form>
             {showConfetti && (
                     <Confetti
@@ -152,7 +154,7 @@ const OrderForm: React.FC = () => {
                         initialVelocityY={{ min: -5, max: -10 }}
                         colors={['#4bc2a2']}
                         confettiSource={{
-                            x: 0 , y: buttonPosition.y, w: buttonPosition.w, h: buttonPosition.h
+                            x: 0 , y: buttonPosition.y, w: buttonPosition.w, h: 0
                         }}
                     />
                 )}

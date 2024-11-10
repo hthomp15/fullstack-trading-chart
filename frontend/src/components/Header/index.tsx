@@ -6,7 +6,7 @@ import arrow from '../../arrow.svg'
 
 const Header: React.FC = () => {
     return (
-        <header className="flex items-center bg-[#1A1A1A] p-2 h-12">
+        <header className="flex items-center p-2 h-12">
             <div className="w-11/12">
                 <label htmlFor="search" className="sr-only">
                     Search
