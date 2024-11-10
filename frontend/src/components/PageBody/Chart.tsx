@@ -1,29 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart, CandlestickData, IChartApi, CandlestickSeriesApi, UTCTimestamp } from 'lightweight-charts';
+import EmojiToolbar from './EmojiToolbar.tsx';
 
 interface ChartComponentProps {
     market: string;
+    interval: string;
 }
 
-const ChartComponent: React.FC<ChartComponentProps> = ({ market }) => {
+const ChartComponent: React.FC<ChartComponentProps> = ({ market, interval }) => {
     const chartContainerRef = useRef<HTMLDivElement | null>(null);
     const [chart, setChart] = useState<IChartApi | null>(null);
     const [candlestickSeries, setCandlestickSeries] = useState<CandlestickSeriesApi<'Candlestick'> | null>(null);
-    const [selectedInterval, setSelectedInterval] = useState<string>('1m');
     const wsRef = useRef<WebSocket | null>(null);  // WebSocket reference
 
-    const intervalMapping = {
-        '1m': '1m', '3m': '3m', '5m': '5m', '15m': '15m', '30m': '30m',
-        '1h': '1h', '2h': '2h', '4h': '4h', '6h': '6h', '8h': '8h',
-        '12h': '12h', '1d': '1d', '3d': '3d', '1w': '1w', '1M': '1M',
-    };
 
     const fetchHistoricalData = async (interval: string) => {
         const now = Date.now();
         const tenDaysAgo = now - 10 * 24 * 60 * 60 * 1000;
 
         const response = await fetch(
-            `https://serverprod.vest.exchange/v2/klines?symbol=${market}&interval=${intervalMapping[interval]}&startTime=${tenDaysAgo}&endTime=${now}&limit=1000`,
+            `https://serverprod.vest.exchange/v2/klines?symbol=${market}&interval=${interval}&startTime=${tenDaysAgo}&endTime=${now}&limit=1000`,
             { headers: { 'xrestservermm': 'restserver0' } }
         );
 
@@ -46,7 +42,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ market }) => {
         if (chartContainerRef.current) {
             const chart = createChart(chartContainerRef.current, {
                 width: chartContainerRef.current.clientWidth,
-                height: 400,
+                height: chartContainerRef.current.clientHeight,
                 layout: { textColor: '#888888', background: { color: '#171513' } },
                 grid: { vertLines: { color: '#313131' }, horzLines: { color: '#313131' } },
                 crosshair: { mode: 1 },
@@ -63,7 +59,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ market }) => {
             setChart(chart);
             setCandlestickSeries(newCandlestickSeries);
 
-            fetchHistoricalData(selectedInterval).then((historicalData) => {
+            fetchHistoricalData(interval).then((historicalData) => {
                 newCandlestickSeries.setData(historicalData);
             });
 
@@ -88,7 +84,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ market }) => {
                 if (resizeTimeout) clearTimeout(resizeTimeout);
             };
         }
-    }, [market, selectedInterval]);
+    }, [market, interval]);
 
     useEffect(() => {
         if (!candlestickSeries) return;
@@ -104,7 +100,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ market }) => {
             console.log('WebSocket connected');
             const subscribeMessage = JSON.stringify({
                 method: 'SUBSCRIBE',
-                params: [`${market}@kline_${selectedInterval}`],
+                params: [`${market}@kline_${interval}`],
                 id: 1,
             });
             wsRef.current?.send(subscribeMessage);
@@ -142,36 +138,12 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ market }) => {
         return () => {
             wsRef.current?.close();
         };
-    }, [selectedInterval, candlestickSeries, market]);
+    }, [interval, candlestickSeries, market]);
 
-
-    const handleIntervalChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedInterval(event.target.value);
-    };
 
     return (
         <div className="w-9/12 mr-4">
-            <div ref={chartContainerRef} />
-            <div style={{ marginTop: '10px' }}>
-                <select
-                    value={selectedInterval}
-                    onChange={handleIntervalChange}
-                    style={{
-                        backgroundColor: '#171513',
-                        color: '#888888',
-                        border: '1px solid #555',
-                        padding: '8px',
-                        fontSize: '14px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    {Object.keys(intervalMapping).map((interval) => (
-                        <option key={interval} value={interval}>
-                            {interval}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <div ref={chartContainerRef} className="w-full h-full"/>
         </div>
     );
 };
