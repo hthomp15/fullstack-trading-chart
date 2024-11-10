@@ -1,35 +1,67 @@
-// OrderForm.tsx
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import Confetti from 'react-confetti';
 
 const OrderForm: React.FC = () => {
     const [orderType, setOrderType] = useState<"long" | "short">("long");
     const [size, setSize] = useState<number | "">("");
-    const [leverage, setLeverage] = useState<number>(0)
+    const [leverage, setLeverage] = useState<number>(0);
+    const [showConfetti, setShowConfetti] = useState(false);
     const leverageMarks = [2, 5, 10, 25, 50, 100, 128];
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     const handleLeverageSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
         setLeverage(Number(event.target.value));
     };
-
 
     const formatLeverage = (value: number) => {
         if (value === 0) return '0,00X';
         return `${new Intl.NumberFormat().format(value)}X`;
     };
 
-
     const handleOrderSelection = () => {
-        if (orderType === "long") setOrderType("short")
-        else setOrderType("long")
-    }
+        if (orderType === "long") setOrderType("short");
+        else setOrderType("long");
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setShowConfetti(true);
+        setTimeout(() => {
+            setShowConfetti(false)
+        }, 2000)
+    };
+
+    // To get the position of the button
+    const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0, w: 0, h: 0 });
+    useEffect(() => {
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            setButtonPosition({
+                x: rect.left + window.pageXOffset,  // Adjusting for page scroll offset
+                y: rect.top + window.pageYOffset,   // Adjusting for page scroll offset
+                w: rect.width,
+                h: rect.height
+            });
+        }
+    }, [showConfetti]);
 
     return (
-        <div className="order-form flex flex-col px-3 bg-[#171513] w-3/12 text-[#adadad] text-left">
+        <div className="order-form flex flex-col px-3 bg-[#171513] w-3/12 text-[#adadad] text-left relative">
             <div className="tabs flex flex-row mb-4">
-                <button onClick={handleOrderSelection} className={`text-2xl  w-full p-3 bg-[#171513] mx-2 ${orderType === "long" ? "text-[#fe5144] border-b-2 border-[#fe5144]" : "text-[#9d9a9b]"}`}>Long</button>
-                <button onClick={handleOrderSelection} className={`text-2xl  w-full p-3 bg-[#171513] mx-2 ${orderType === "short" ? "text-[#fe5144] border-b-2 border-[#fe5144]" : "text-[#9d9a9b]"}`}>Short</button>
+                <button
+                    onClick={handleOrderSelection}
+                    className={`text-2xl  w-full p-3 bg-[#171513] mx-2 ${orderType === "long" ? "text-[#fe5144] border-b-2 border-[#fe5144]" : "text-[#9d9a9b]"}`}
+                >
+                    Long
+                </button>
+                <button
+                    onClick={handleOrderSelection}
+                    className={`text-2xl  w-full p-3 bg-[#171513] mx-2 ${orderType === "short" ? "text-[#fe5144] border-b-2 border-[#fe5144]" : "text-[#9d9a9b]"}`}
+                >
+                    Short
+                </button>
             </div>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="flex flex-row mb-4">
                     <div className="order-selection w-8/12 flex flex-col">
                         <label htmlFor="orderType" className="text-[#f3f0ef] w-full ">Order Type</label>
@@ -102,13 +134,28 @@ const OrderForm: React.FC = () => {
                     <option value="Advanced">Advanced</option>
                     <option value="Light">Light</option>
                 </select>
-                <button 
+                <button
                     type="submit"
+                    ref={buttonRef}
+                    onClick={handleSubmit}
                     className="p-3 text-center w-full text-2xl bg-[#4bc2a2] text-[#1a1a1a] rounded"
                 >
-                     Buy / {orderType.charAt(0).toUpperCase() + orderType.slice(1)}
+                    Buy / {orderType.charAt(0).toUpperCase() + orderType.slice(1)}
                 </button>
             </form>
+            {showConfetti && (
+                    <Confetti
+                        width={window.innerWidth}
+                        height={window.innerHeight}
+                        numberOfPieces={1000}
+                        gravity={0}
+                        initialVelocityY={{ min: -5, max: -10 }}
+                        colors={['#4bc2a2']}
+                        confettiSource={{
+                            x: 0 , y: buttonPosition.y, w: buttonPosition.w, h: buttonPosition.h
+                        }}
+                    />
+                )}
         </div>
     );
 };
