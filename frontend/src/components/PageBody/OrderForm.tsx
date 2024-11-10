@@ -9,6 +9,8 @@ const OrderForm: React.FC = () => {
     const leverageMarks = [2, 5, 10, 25, 50, 100, 128];
     const buttonRef = useRef<HTMLButtonElement>(null);
 
+    const pingSound = useRef(new Audio("/sounds/Ping.wav"));
+
     const handleLeverageSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
         setLeverage(Number(event.target.value));
     };
@@ -25,10 +27,13 @@ const OrderForm: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+    
+        pingSound.current.play();
+
         setShowConfetti(true);
         setTimeout(() => {
             setShowConfetti(false)
-        }, 2000)
+        }, 2000);
     };
 
     // To get the position of the button
