@@ -47,16 +47,16 @@ const OrderForm: React.FC = () => {
 
     return (
         <div className="order-form flex flex-col px-3 bg-[#171513] w-3/12 text-[#adadad] text-left relative">
-            <div className="tabs flex flex-row mb-4">
+            <div className="tabs flex flex-row mb-4 ">
                 <button
                     onClick={handleOrderSelection}
-                    className={`text-2xl  w-full p-3 bg-[#171513] mx-2 ${orderType === "long" ? "text-[#fe5144] border-b-2 border-[#fe5144]" : "text-[#9d9a9b]"}`}
+                    className={`text-xl  w-full p-3 bg-[#171513] mx-2 ${orderType === "long" ? "text-[#fe5144] border-b-2 border-[#fe5144]" : "text-[#9d9a9b]"}`}
                 >
                     Long
                 </button>
                 <button
                     onClick={handleOrderSelection}
-                    className={`text-2xl  w-full p-3 bg-[#171513] mx-2 ${orderType === "short" ? "text-[#fe5144] border-b-2 border-[#fe5144]" : "text-[#9d9a9b]"}`}
+                    className={`text-xl  w-full p-3 bg-[#171513] mx-2 ${orderType === "short" ? "text-[#fe5144] border-b-2 border-[#fe5144]" : "text-[#9d9a9b]"}`}
                 >
                     Short
                 </button>

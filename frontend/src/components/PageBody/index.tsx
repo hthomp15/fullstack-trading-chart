@@ -7,27 +7,40 @@ import { MarketData } from '../../types/market'
 
 const PageBody: React.FC = () => {
     const [market, setMarket] = useState<string>("BTC-PERP");
-    const [chartType, setChartType] = useState<"price" | "funding">("price");
+    const [chartType, setChartType] = useState<string>("price");
     const [data, setData] = useState<MarketData>({
-        market: "BTC/USDT",
-        price: 45678.90,
-        change24h: -125.50,
-        changePercentage: -0.27,
-        fundingRate: 0.0015,
-        longOpenInterest: 1523.768,
-        shortOpenInterest: 1123.456,
-        chartType: "price"
+        market: "",
+        price: Number(),
+        change24h: Number(),
+        changePercentage: Number(),
+        fundingRate: Number(),
+        longOpenInterest: Number(),
+        shortOpenInterest: Number(),
+        chartType: ""
     });
 
     const handleUpdateMarket = (market: string) => {
         setMarket(market)
     }
 
+    const handleUpdateChartType = (chartType: string) => {
+        setChartType(chartType)
+    }
 
     return (
         <div className="main-chart w-full mt-4">
-            <ChartHeader marketData={data} market={market} updateMarket={handleUpdateMarket}/>
-            <div className="flex mt-4">
+            <ChartHeader 
+                marketData={data} 
+                market={market} 
+                updateMarket={handleUpdateMarket} 
+                updateChartType={handleUpdateChartType}
+                chartType={chartType}
+            />
+            <div className="tabs">
+                <button onClick={() => setChartType("price")}>Price</button>
+                <button onClick={() => setChartType("funding")}>Funding</button>
+            </div>
+            <div className="flex">
                 <ChartComponent market={market}/>
                 <OrderForm />
             </div>
