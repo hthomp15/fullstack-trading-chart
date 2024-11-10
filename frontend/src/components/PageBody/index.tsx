@@ -11,15 +11,16 @@ const PageBody: React.FC = () => {
     const [chartType, setChartType] = useState<string>("price");
     const [selectedInterval, setSelectedInterval] = useState<string>('1m');
     const [data, setData] = useState<MarketData>({
-        market: "",
-        price: Number(),
-        change24h: Number(),
-        changePercentage: Number(),
-        fundingRate: Number(),
-        longOpenInterest: Number(),
-        shortOpenInterest: Number(),
-        chartType: ""
+        market: "BTC/USDT",
+        price: 45678.90,
+        change24h: -125.50,
+        changePercentage: -0.27,
+        fundingRate: 0.0015,
+        longOpenInterest: 1523.768,
+        shortOpenInterest: 1123.456,
+        chartType: "price"
     });
+    
 
     const handleUpdateMarket = (market: string) => {
         setMarket(market)
